@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop 
+http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<!-- QUEUE -->
+	
+	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+ 		<property name="brokerURL" value="tcp://localhost:61616"/>
+ 	</bean>
+	
+	<bean id="queue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="myQueue"/>
+	</bean>	
+
+	<bean id="queueReceiver" class="com.efrei.queue.AQueueReceiver">
+		<constructor-arg ref="connectionFactory"/>
+		<constructor-arg ref="queue"/>
+	</bean>
+	
+	<bean id="queueSender" class="com.efrei.queue.AQueueSender">
+		<constructor-arg ref="connectionFactory"/>
+		<constructor-arg ref="queue"/>
+	</bean>
+	
+	<!-- TOPIC -->
+	
+	<bean id="topic" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg value="myTopic"/>
+	</bean>
+	
+	<bean id="topicSubscriber1" class="com.efrei.topic.ATopicSubscriber">
+		<constructor-arg ref="connectionFactory"/>
+		<constructor-arg ref="topic"/>
+	</bean>
+	
+	<bean id="topicSubscriber2" class="com.efrei.topic.ATopicSubscriber">
+		<constructor-arg ref="connectionFactory"/>
+		<constructor-arg ref="topic"/>
+	</bean>
+	
+	<bean id="topicPublisher" class="com.efrei.topic.ATopicPublisher">
+		<constructor-arg ref="connectionFactory"/>
+		<constructor-arg ref="topic"/>
+	</bean>	
+	
+</beans>
+
